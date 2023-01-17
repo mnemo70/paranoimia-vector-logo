@@ -37,7 +37,7 @@ tables.
 
 The music code was disassembled as-is and works. There is a
 release of the music's executable that includes assembler
-symbols, but concentrated on the graphics code and did no
+symbols, but I concentrated on the graphics code and did no
 commenting on the music code.
 
 ## Contact
