@@ -2913,7 +2913,7 @@ mainloop:
 	MOVE.W	#$C000,$DFF09A	;INTENA
 	MOVE.W	#$8020,$DFF096	;DMACON
 ; Restore copper list. This makes assumptions about the position
-; of graphics.library in the list of libraries.
+; of graphics.library in the list of libraries, which is bad.
 	MOVE.L	4,A6
 	MOVE.L	(A6),A6
 	MOVE.L	(A6),A6
@@ -2936,7 +2936,7 @@ scroll_text:
 	MOVE.L	#$F9F00000,$DFF040	;BLTCON0/BLTCON1
 	MOVE.W	#$217,$DFF058		;BLTSIZE
 .waitblit:
-	BTST	#6,$DFF002
+	BTST	#14,$DFF002			;DMACONR, #14 is allowed, but should be 6
 	BNE.S	.waitblit
 	ADD.B	#1,scrollbitcnt
 	CMPI.B	#8,scrollbitcnt
@@ -3369,7 +3369,7 @@ lbC0031D0:
 blitprio:
 	MOVE.W	#$8400,$DFF096		;DMACON, set blitter prio
 .waitblit:
-	BTST	#6,$DFF002		;DMACONR
+	BTST	#14,$DFF002		;DMACONR, #14 is allowed, but should be 6
 	BNE.S	.waitblit
 	MOVE.W	#$400,$DFF002		;Reset blitter prio
 	RTS

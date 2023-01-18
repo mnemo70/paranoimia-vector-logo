@@ -40,6 +40,12 @@ release of the music's executable that includes assembler
 symbols, but I concentrated on the graphics code and did no
 commenting on the music code.
 
+## Resources
+
+- [Demozoo](https://demozoo.org/productions/142591/)
+- [Kestra Amiga Demo Database](http://janeway.exotica.org.uk/release.php?id=17790)
+- [Pouet (Shinobi version)](https://www.pouet.net/prod.php?which=4023)
+
 ## Contact
 
 You can reach me at mnemotron \[at\] gmail.com.
