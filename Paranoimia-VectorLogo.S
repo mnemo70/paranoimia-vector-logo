@@ -195,7 +195,7 @@ lbC0001E4:
 
 lbC0001F6:
 	TST.B	$14(A0)
-	BMI.L	lbC00037C
+	BMI	lbC00037C
 	MOVE.L	4(A0),A1
 	MOVE.L	(A1),A2
 	MOVE.W	$10(A0),D0
@@ -256,7 +256,7 @@ lbC000280:
 	LEA	$42(A0),A2
 	MOVE.L	$1A(A1),A3
 	TST.L	$1E(A1)
-	BEQ.L	lbC0002D0
+	BEQ	lbC0002D0
 	MOVE.L	$1E(A1),A4
 lbC0002B8:
 	MOVE.B	(A3)+,D2
@@ -273,7 +273,7 @@ lbC0002B8:
 
 lbC0002D0:
 	BTST	#1,$14(A0)
-	BEQ.L	lbC0002DC
+	BEQ	lbC0002DC
 	MOVE.L	A2,A3
 lbC0002DC:
 	BSET	#1,$14(A0)
@@ -337,10 +337,10 @@ lbC00037E:
 	MOVE.L	(A0),A1
 lbC000380:
 	MOVE.B	(A1)+,D0
-	BEQ.L	lbC00047E
+	BEQ	lbC00047E
 	BPL.S	lbC0003DE
 	CMPI.B	#$B8,D0
-	BPL.L	lbC000468
+	BPL	lbC000468
 	CMPI.B	#$9C,D0
 	BNE.S	lbC0003A0
 	MOVE.B	(A1)+,14(A0)
@@ -2940,7 +2940,7 @@ scroll_text:
 	BNE.S	.waitblit
 	ADD.B	#1,scrollbitcnt
 	CMPI.B	#8,scrollbitcnt
-	BNE.L	scroll_done
+	BNE	scroll_done
 	CLR.W	scrollbitcnt
 scroll_nextchar:
 	CLR.L	D0
@@ -2948,7 +2948,7 @@ scroll_nextchar:
 	MOVE.B	(A0)+,D0
 	ADD.L	#1,scrollpointer
 	TST.B	D0
-	BNE.L	scrollnotend
+	BNE	scrollnotend
 	MOVE.L	#scrolltext,scrollpointer
 	BRA	scroll_nextchar
 
@@ -3076,7 +3076,7 @@ starloop:
 	MOVE.W	(A4),D6	;z-pos
 	SUBQ.W	#6,(A4)+	;decr z-pos
 	TST.W	D6
-	BLE.L	reinit_starpos
+	BLE	reinit_starpos
 	EXT.L	D4
 	EXT.L	D5
 	DIVS.W	D6,D4
@@ -3084,13 +3084,13 @@ starloop:
 	ADD.W	#160,D4
 	ADD.W	#128,D5
 	TST.W	D4
-	BLT.L	reinit_starpos
+	BLT	reinit_starpos
 	TST.W	D5
-	BLT.L	reinit_starpos
+	BLT	reinit_starpos
 	CMPI.W	#319,D4
-	BGT.L	reinit_starpos
+	BGT	reinit_starpos
 	CMPI.W	#255,D5
-	BGT.L	reinit_starpos
+	BGT	reinit_starpos
 	MULU.W	#40,D5
 	MOVE.W	D4,D7
 	LSR.W	#3,D4
@@ -3585,7 +3585,7 @@ projloop:
 	EXT.L	D5
 	ADD.W	#$100,D3
 	TST.W	D3
-	BNE.L	.notzero
+	BNE	.notzero
 	MOVE.W	#1,D3
 .notzero:
 	DIVS.W	D3,D4
