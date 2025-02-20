@@ -1,0 +1,107 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "winuae",
+            "request": "launch",
+            "name": "WinUAE Debug (A500)",
+            //"buildWorkspace": true,
+            "stopOnEntry": false,
+            "serverName": "localhost",
+            "serverPort": 2345,
+            "startEmulator": true,
+            "trace": false,
+            "exceptionMask": 60,
+            "emulatorStartDelay": 1500,
+            "emulator": "${workspaceFolder}/bin/winuae.exe",
+            "emulatorWorkingDir": "${workspaceFolder}/bin",
+            "program": "${workspaceFolder}/uae/dh0/myprogram",
+            "options": [
+                "-s",
+                "quickstart=a500,0",
+                "-s",
+                "filesystem=rw,dh0:${workspaceFolder}\\uae\\dh0",
+                "-s",
+                "debugging_trigger=SYS:myprogram",
+                "-s",
+                "debugging_features=gdbserver"
+            ],
+            "preLaunchTask": "amigaassembly: build"
+        },
+        {
+            "type": "amiga-assembly",
+            "request": "launch",
+            "name": "WinUAE Debug (A600)",
+            "stopOnEntry": true,
+            "program": "${workspaceFolder}/uae/dh0/myprogram",
+            "trace": true,
+            "remoteProgram": "SYS:myprogram",
+            "emulatorType": "winuae",
+            "emulatorArgs": [
+                //"-f",
+                //"./default.uae",
+                //"-r",
+                //"D:/Emu/Amiga/Roms/amiga-os-130.rom",
+                "-s",
+                "use_gui=false",
+                "-s",
+                "quickstart=A600,0",
+                "-s",
+                "filesystem=rw,dh0:${workspaceFolder}/uae/dh0",
+                "-s",
+                "debugmem_start=0x70000000",
+                "-s",
+                "debugmem_size=256"
+            ],
+            "preLaunchTask": "amigaassembly: build"
+        },
+        {
+            "type": "amiga-assembly",
+            "request": "launch",
+            "name": "WinUAE Launch (A600)",
+            "program": "${workspaceFolder}/uae/dh0/myprogram",
+            "emulatorType": "winuae",
+            "emulatorArgs": [
+                "-s",
+                "use_gui=false",
+                "-s",
+                "quickstart=A600,0",
+                "-s",
+                "filesystem=rw,dh0:${workspaceFolder}/uae/dh0",
+                //"-r",
+                //"D:/Emu/Amiga/Roms/amiga-os-130.rom"
+            ],
+            "preLaunchTask": "amigaassembly: build"
+        },
+        {
+            "type": "winuae",
+            "request": "launch",
+            "name": "WinUAE Debug (A3000)",
+            //"buildWorkspace": true,
+            "stopOnEntry": false,
+            "serverName": "localhost",
+            "serverPort": 2345,
+            "startEmulator": true,
+            "trace": false,
+            "exceptionMask": 60,
+            "emulatorStartDelay": 1500,
+            "emulator": "${workspaceFolder}/bin/winuae.exe",
+            "emulatorWorkingDir": "${workspaceFolder}/bin",
+            "program": "${workspaceFolder}/uae/dh0/myprogram",
+            "options": [
+                "-s",
+                "quickstart=a3000,0",
+                "-s",
+                "filesystem=rw,dh0:${workspaceFolder}\\uae\\dh0",
+                "-s",
+                "debugging_trigger=SYS:myprogram",
+                "-s",
+                "debugging_features=gdbserver"
+            ],
+            "preLaunchTask": "amigaassembly: build"
+        }
+    ]
+}
