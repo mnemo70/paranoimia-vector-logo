@@ -9,7 +9,11 @@
 * in 2023 using ReSource V6.06.
 *
 * This is a slightly improved version of the source
-* including a more compatible startup code.
+* including more compatible startup code. (P) 2025.
+*
+* Compiles in Visual Studio Code with the Amiga Assembly
+* extension:
+* https://github.com/prb28/vscode-amiga-assembly
 *
 *******************************************************
 
@@ -26,6 +30,7 @@ num_lines	EQU	28
 
 	section	main,code_c
 
+; Uses startup code by StingRay
 	include	"startup.i"
 
 ; Main entry point. Called from startup.i
@@ -48,20 +53,21 @@ MAIN:
 
 	bsr	init_bpl_pointers
 
+	move.w	#$0038,$DFF092		;DDFSTRT
+	move.w	#$00D0,$DFF094		;DDFSTOP
+	move.w	#$2041,$DFF08E		;DIWSTRT V=32,H=65 ($2041)
+;following value seems wrong. $15FF works
+;	move.w	#$35FF,$DFF090		;DIWSTOP V=53,H=255 ($35FF)
+	move.w	#$15FF,$DFF090		;DIWSTOP V=53,H=255 ($35FF)
+
+	move.w	#$0020,$DFF096		;DMACON
+	move.w	#0,$DFF10A		;BPL2MOD
+
 	move.w	#$83C0,$DFF096
 	move.w	#$4000,$DFF09A
 
 	move.l	#copper_list,$DFF080	;COP1LCH
 	clr.w	$DFF088			;COPJMP1
-
-	move.w	#$0038,$DFF092		;DDFSTRT
-	move.w	#$00D0,$DFF094		;DDFSTOP
-	move.w	#$2041,$DFF08E		;DIWSTRT V=32,H=65 ($2041)
-;following value seems wrong. $15FF works
-	move.w	#$35FF,$DFF090		;DIWSTOP V=53,H=255 ($35FF)
-
-	move.w	#$0020,$DFF096		;DMACON
-	move.w	#0,$DFF010A		;BPL2MOD
 mainloop:
 	move.l	$DFF004,D0		;VPOSR
 	asr.l	#8,D0
@@ -143,7 +149,7 @@ init_bpl_pointers:
 ***************
 
 scroll_text:
-	move.l	#$E000E,$DFF064		;BLTAMOD/BLTDMOD
+	move.l	#$000E000E,$DFF064	;BLTAMOD/BLTDMOD
 	move.l	#text_bpl+2,$DFF050	;BLTAPTR
 	move.l	#text_bpl,$DFF054	;BLTDPTR
 	move.l	#$F9F00000,$DFF040	;BLTCON0/BLTCON1
@@ -192,11 +198,11 @@ scroll_done:
 **************
 
 do_stars:
-; starpostab stores (x,y,z) for each star in words
+;starpostab stores (x,y,z) for each star in words
 	moveq	#num_stars-1,D3
 ;Prep for PRNG call
 	LEA	prnd_value,A3
-; starrestoretab stores (star offset in bpl,bit number) in words
+;starrestoretab stores (star offset in bpl,bit number) in words
 	LEA	starpostab,A4
 	LEA	starrestoretab,A5
 
@@ -205,9 +211,9 @@ do_stars:
 starloop:
 
 ;Erase old star first
-	move.w	(A5),D0			;get old offset
+	move.w	(A5),D0		;get old offset
 	bmi.s	.skiperase
-	move.w	2(A5),D1		;get old bit
+	move.w	2(A5),D1	;get old bit
 ;Clear old star in both bitplanes
 	bclr	D1,(A1,D0.W)
 	bclr	D1,(A2,D0.W)
@@ -231,13 +237,13 @@ starloop:
 	bgt.s	reinit_starpos
 	cmp.w	#255,D5
 	bgt.s	reinit_starpos
-	mulu.w	#40,D5			;y * bytes per line
+	mulu.w	#40,D5		;y * bytes per line
 	move.w	D4,D7
-	lsr.w	#3,D4			;x/8 -> byte offset
+	lsr.w	#3,D4		;x/8 -> byte offset
 	add.w	D4,D5
-	not.b	D7			;flip bit order in byte
+	not.b	D7		;flip bit order in byte
 	move.w	D5,(A5)+
-	move.w	D7,(A5)+		;store new offset
+	move.w	D7,(A5)+	;store new offset
 
 ;Check z distance for drawing color (different bitplanes)
 	cmp.w	#400,D6
@@ -844,7 +850,7 @@ cosine_data:
 fontdata:
 	incbin	"scrollfont.raw"
 
-; The famous music as a source include.
+; The famous music
 
 	include	"sunriders-music.S"
 
@@ -993,8 +999,7 @@ ea_logo:
 ;Scrolltext bitplane with overscan
 text_bpl	ds.b	60*10
 
-;	ds.b	4096
-;Starfield bitplane
+;Starfield bitplanes
 stars_bpl1:	ds.b	256*40
 stars_bpl2:	ds.b	256*40
 
@@ -1011,29 +1016,29 @@ scrollpointer:	ds.l	1
 ; Vector rotation angles
 ; Initialized to $3333 in the unpacked data, which probably was
 ; not intentional, but sets the rotation to a specific start.
-rot_b:	ds.w	1
-rot_a:	ds.w	1
+rot_b:		ds.w	1
+rot_a:		ds.w	1
 
 ; Temporary variables for vector calculation
-w57E52:	ds.w	1
-w57E54:	ds.w	1
-w57E56:	ds.w	1
-w57E58:	ds.w	1
-w57E5A:	ds.w	1
-w57E5C:	ds.w	1
-w57E5E:	ds.w	1
-w57E60:	ds.w	1
-w57E62:	ds.w	1
+w57E52:		ds.w	1
+w57E54:		ds.w	1
+w57E56:		ds.w	1
+w57E58:		ds.w	1
+w57E5A:		ds.w	1
+w57E5C:		ds.w	1
+w57E5E:		ds.w	1
+w57E60:		ds.w	1
+w57E62:		ds.w	1
 
-w57E64:	ds.w	1
-w57E66:	ds.w	1
-w57E68:	ds.w	1
-w57E6A:	ds.w	1
-w57E6C:	ds.w	1
-w57E6E:	ds.w	1
-w57E70:	ds.w	1
-w57E72:	ds.w	1
-w57E74:	ds.w	1
+w57E64:		ds.w	1
+w57E66:		ds.w	1
+w57E68:		ds.w	1
+w57E6A:		ds.w	1
+w57E6C:		ds.w	1
+w57E6E:		ds.w	1
+w57E70:		ds.w	1
+w57E72:		ds.w	1
+w57E74:		ds.w	1
 
 ;star positions in 3D
 starpostab:	ds.w	num_stars*3 + 3

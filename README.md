@@ -18,9 +18,14 @@ Commodore Amiga emulation and then tidied up a bit in ASM-One.
 ## Usage
 
 On an Amiga (or emulator), run the ASM-One or Asm-Pro assembler
-and load the source file with the "r" command. Following that,
-assemble with "a" and run the intro with "j main", which jumps
-to the main entry point of the code.
+and load the source file "Paranoimia-VectorLogo-original.S" with
+the "r" command. Following that, assemble with "a" and run the
+intro with "j main", which jumps to the main entry point of the code.
+
+The modern version "Paranoimia-VectorLogo.asm" compiles with
+Visual Studio Code and the [Amiga Assembly extension](https://github.com/prb28/vscode-amiga-assembly).
+You probably need to adapt launch.json to your environment. This
+even works on an Amiga 3000 with 68060 processor now.
 
 ## Notes
 
@@ -50,4 +55,4 @@ commenting on the music code.
 
 You can reach me at mnemotron \[at\] gmail.com.
 
-mnemo, 2023-01-17
+MnemoTron/Spreadpoint, 2025-02-26
